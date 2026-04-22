@@ -19,8 +19,8 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t varanankb/teacher-service:latest .
-          docker push varanankb/teacher-service:latest
+          docker build -t Kojithan/teacher-service:latest .
+          docker push Kojithan/teacher-service:latest
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
