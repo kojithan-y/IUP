@@ -16,13 +16,13 @@ const swaggerOptions = {
     info: {
       title: 'Teacher Microservice API',
       version: '1.0.0',
-      description:
-        'RESTful API for managing teachers. Integrates with the Student microservice for supervised student records and the Exam microservice for class exam data.',
+      description: 'RESTful API for managing teachers.',
     },
     servers: [
       {
-        url: `http://localhost:${PORT}`,
-        description: 'Local server',
+        // FIX 1: Hardcoded localhost-a remove pannitu, dynamic-ah mathi iruken
+        url: '/', 
+        description: 'Current server',
       },
     ],
     components: {
@@ -42,12 +42,6 @@ const swaggerOptions = {
             },
           },
         },
-        Error: {
-          type: 'object',
-          properties: {
-            message: { type: 'string' },
-          },
-        },
       },
     },
   },
@@ -57,7 +51,7 @@ const swaggerOptions = {
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.use(cors());
+app.use(cors()); // Ithu correct-ah iruku
 app.use(express.json());
 
 app.get('/health', (req, res) => {
@@ -75,15 +69,12 @@ mongoose
   .connect(MONGO_URI)
   .then(() => {
     console.log('MongoDB connected');
-    app.listen(PORT, () => {
+    // FIX 2: AWS-la '0.0.0.0' kudutha thaan container veliya access panna mudiyum
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`Server listening on port ${PORT}`);
-      console.log(`Swagger UI available at http://localhost:${PORT}/api-docs`);
     });
   })
   .catch((err) => {
     console.error('MongoDB connection error:', err.message);
     process.exit(1);
   });
-
-
-  // change
